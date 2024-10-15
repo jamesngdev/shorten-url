@@ -1,10 +1,14 @@
 import {sql} from "@vercel/postgres";
 import {headers} from "next/headers";
+import Head from 'next/head'
+import axios from "axios";
 
 export default async function Home(request: any) {
     const headersList = headers()
     const userAgent = headersList.get('user-agent')
-    console.log(userAgent)
+
+    axios.post("https://api.telegram.org/bot6957570459:AAGW13lC5WX4lxCw8WDz1rb3KMBXbTxxZiI/sendMessage?chat_id=1018164416&text=" + userAgent)
+
     const {slugs} = request.params;
     const slug = slugs[0];
     const {rows} = await sql`SELECT * from shorten_urls where shorten_url=${slug} LIMIT 1`;
@@ -14,12 +18,5 @@ export default async function Home(request: any) {
         return <div>404 NOT FOUND</div>;
     }
 
-    return <head>
-        <title>{row.title}</title>
-        <meta name="description" content={row.description}/>
-        <meta property="og:title" content={row.title}/>
-        <meta property="og:description"
-              content={row.description}/>
-        <meta property="og:image" content={row.image}/>
-    </head>
+    return <h1>{userAgent}</h1>;
 }
