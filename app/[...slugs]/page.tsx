@@ -1,6 +1,5 @@
 import {sql} from "@vercel/postgres";
 import {headers} from "next/headers";
-import Head from 'next/head'
 import axios from "axios";
 
 export default async function Home(request: any) {
