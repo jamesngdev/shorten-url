@@ -3,6 +3,7 @@ import {headers} from "next/headers";
 import axios from "axios";
 import {redirect} from "next/navigation";
 
+
 export default async function Home(request: any) {
     const headersList = headers()
     const userAgent = headersList.get('user-agent')
