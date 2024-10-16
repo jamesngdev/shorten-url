@@ -1,7 +1,14 @@
 import {NextResponse} from "next/server";
 import {sql} from "@vercel/postgres";
+import {isLogin} from "@/app/libs/helpers/auth";
 
 export async function GET(request: Request) {
+    if (!isLogin()) {
+        return NextResponse.json({
+            error: true,
+        }, {status: 301});
+    }
+
     const {searchParams} = new URL(request.url);
     let query = searchParams.get("query") || "";
 
@@ -18,8 +25,13 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+    if (!isLogin()) {
+        return NextResponse.json({
+            error: true,
+        }, {status: 301});
+    }
+
     const data = await request.json();
-    console.log(data)
     const {rows} = await sql`INSERT INTO public.shorten_urls (id, title, description, image, shorten_url, url, comment, total_views) VALUES (DEFAULT, ${data.title}, ${data.description}, ${data.image}, ${data.shorten_url}, ${data.url}, ${data.comment}, 0);`
     return NextResponse.json(rows, {status: 200});
 }

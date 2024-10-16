@@ -1,6 +1,5 @@
 import {sql} from "@vercel/postgres";
 import {headers} from "next/headers";
-import axios from "axios";
 import {redirect} from "next/navigation";
 
 
@@ -9,7 +8,7 @@ export default async function Home(request: any) {
     const userAgent = headersList.get('user-agent')
 
 
-    axios.post(`https://api.telegram.org/${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=1018164416&text=${userAgent}`)
+    // axios.post(`https://api.telegram.org/${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=1018164416&text=${userAgent}`)
 
     const {slugs} = request.params;
     const slug = slugs[0];
