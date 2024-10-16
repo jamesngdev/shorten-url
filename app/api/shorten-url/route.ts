@@ -32,6 +32,6 @@ export async function POST(request: Request) {
     }
 
     const data = await request.json();
-    const {rows} = await sql`INSERT INTO public.shorten_urls (id, title, description, image, shorten_url, url, comment, total_views) VALUES (DEFAULT, ${data.title}, ${data.description}, ${data.image}, ${data.shorten_url}, ${data.url}, ${data.comment}, 0);`
+    const {rows} = await sql`INSERT INTO public.shorten_urls (id, title, description, image, shorten_url, url, comment, total_views, is_redirect) VALUES (DEFAULT, ${data.title}, ${data.description}, ${data.image}, ${data.shorten_url}, ${data.url}, ${data.comment},  0, ${data.is_redirect});`
     return NextResponse.json(rows, {status: 200});
 }

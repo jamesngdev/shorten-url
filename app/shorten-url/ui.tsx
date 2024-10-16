@@ -13,7 +13,10 @@ export default function ShortenURL() {
     const createShortURL = async (values: any) => {
         setError("")
         setIsPending(true);
-        const response = await axios.post("/api/shorten-url", values).then(res => res.data).catch(() => undefined)
+        const response = await axios.post("/api/shorten-url", {
+            ...values,
+            is_redirect: values.is_redirect === 'true'
+        }).then(res => res.data).catch(() => undefined)
         if (!response) {
             setIsPending(false);
             setError("Link rut ngon bi trung")
@@ -93,7 +96,6 @@ export default function ShortenURL() {
                                     <label htmlFor="title" className="form-label">Title</label>
                                     <input type="text" {...register("title")} className="form-control"
                                     />
-
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="description" className="form-label">Description</label>
@@ -104,6 +106,14 @@ export default function ShortenURL() {
                                     <label htmlFor="image" className="form-label">Image</label>
                                     <input type="text" className="form-control" id="image"
                                            {...register("image")} />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="is_redirect" className="form-label">Redirect Mode</label>
+                                    <select className="form-control" {...register("is_redirect")} >
+                                        <option value="true">Yes</option>
+                                        <option value="false" selected>No</option>
+                                    </select>
                                 </div>
 
                                 {error && (
@@ -137,6 +147,7 @@ export default function ShortenURL() {
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Shorten URL</th>
+                                    <th scope="col">Redirect</th>
                                     <th scope="col">Fake URL</th>
                                     <th scope="col">Real URL</th>
                                     <th scope="col">Total Views</th>
@@ -151,6 +162,9 @@ export default function ShortenURL() {
                                             <a href={row.shorten_url} target="_blank">
                                                 {row.shorten_url}
                                             </a>
+                                        </td>
+                                        <td>
+                                            {row.is_redirect ? <p className="text-success">Yes</p> : <p className="text-warning">No</p>}
                                         </td>
                                         <td>
                                             <div className="d-flex gap-3">
